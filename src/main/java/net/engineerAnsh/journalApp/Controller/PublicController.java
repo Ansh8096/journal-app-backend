@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Public APIs", description = "Application status")
 public class PublicController {
 
-    @GetMapping("health-Check")
+    @GetMapping("/health-check")
     @Operation(summary = "Application's current health status")
     public String healthCheckup() {
         return "ok";
