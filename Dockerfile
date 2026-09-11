@@ -1,32 +1,39 @@
-# -------------------------------
-#       BUILD STAGE
-# -------------------------------
-FROM maven:3.8.3-openjdk-17 AS build
+# ============================================================
+# BUILD STAGE
+# ============================================================
+
+FROM maven:3.9-eclipse-temurin-17 AS build
+
 WORKDIR /app
 
-# Copy only pom.xml first (better caching)
+# Copy Maven descriptor first.
+# This improves Docker layer caching.
 COPY pom.xml .
 
-# Download dependencies (optional but speeds rebuilds)
-RUN mvn -q dependency:go-offline
+# Download dependencies before copying source.
+RUN mvn -B dependency:go-offline
 
-# Copy the source code
+# Copy application source and resources.
 COPY src ./src
 
-# Package the application (skips tests)
-RUN mvn clean package -DskipTests
+# Build the Spring Boot executable JAR.
+RUN mvn -B clean package -DskipTests
 
-# -------------------------------
-#       RUN STAGE
-# -------------------------------
-FROM eclipse-temurin:17-jdk
+
+# ============================================================
+# RUNTIME STAGE
+# ============================================================
+
+FROM eclipse-temurin:17-jre
+
 WORKDIR /app
 
-# Copy the built jar from build stage
+# Copy the generated Spring Boot JAR.
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose the Spring Boot port
+# Documentation/default port.
+# Spring Boot will actually use ${PORT:8080}.
 EXPOSE 8080
 
-# Run the jar
-ENTRYPOINT ["java","-jar","app.jar"]
+# Start application.
+ENTRYPOINT ["java", "-jar", "app.jar"]

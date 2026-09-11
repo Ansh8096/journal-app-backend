@@ -2,9 +2,11 @@ package net.engineerAnsh.journalApp.Service;
 
 import net.engineerAnsh.journalApp.model.SentimentData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+@Profile("dev")
 @Service
 public class SentimentConsumerService {
 

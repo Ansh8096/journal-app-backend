@@ -8,6 +8,7 @@ import net.engineerAnsh.journalApp.Repository.UserRepositoryImpl;
 import net.engineerAnsh.journalApp.Service.EmailService;
 import net.engineerAnsh.journalApp.enums.Mood;
 import net.engineerAnsh.journalApp.model.SentimentData;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Profile("dev")
 @Slf4j
 @RequiredArgsConstructor
 public class UserSchedular {

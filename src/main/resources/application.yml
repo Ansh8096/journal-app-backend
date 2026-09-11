@@ -1,19 +1,95 @@
 spring:
-  profiles:
-    active: dev
+  application:
+    name: "Journal Application"
 
-# Enables debug and upper logs ...
-#logging:
-#  level:
-#    net:
-#      engineerAnsh:
-#        journalApp: DEBUG
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: journaldb
+      auto-index-creation: true
 
-# It disables all the logs for particular package or class...
-#logging:
-#  level:
-#    net:
-#      engineerAnsh:
-#        journalApp:
-#          Service:
-#            UserService: OFF
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      username: ${REDIS_USERNAME}
+      password: ${REDIS_PASSWORD}
+      ssl:
+        enabled: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 25MB
+
+server:
+  port: ${PORT:8080}
+  address: 0.0.0.0
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    syntaxHighlight:
+      theme: Monokai
+
+app:
+  cors:
+    allowed-origin: ${ALLOWED_ORIGIN}
+
+  images:
+    max-count: 5
+    max-size: 5 * 1024 * 1024
+
+  jwt:
+    secret: ${JWT_SECRET}
+
+  oauth2:
+    frontend-success-url: ${FRONTEND_SUCCESS_URL}
+    frontend-signup-url: ${FRONTEND_SIGNUP_URL}
+    frontend-login-url: ${FRONTEND_LOGIN_URL}
+    frontend-failure-url: ${FRONTEND_FAILURE_URL}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+  profile-image-folder: ${CLOUDINARY_PROFILE_IMAGE_FOLDER}
+  journal-image-folder: ${CLOUDINARY_JOURNAL_IMAGE_FOLDER}
+
+journal:
+  tags:
+    max-count: 10
+    max-length: 30
+
+weather:
+  openweather:
+    base-url: https://api.openweathermap.org/data/2.5/weather
+    geocoding-url: https://api.openweathermap.org/geo/1.0/direct
+    api-key: ${OPENWEATHER_API_KEY}
+    units: metric
+    temperature-unit: "°C"
+    wind-speed-unit: "km/h"
+    cache-ttl-seconds: 600
