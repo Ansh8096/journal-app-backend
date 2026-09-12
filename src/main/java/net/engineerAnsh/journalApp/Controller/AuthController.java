@@ -18,6 +18,7 @@ import net.engineerAnsh.journalApp.Service.OAuth2TokenExchangeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,12 @@ public class AuthController {
     private static final String OAUTH_TOKEN_COOKIE = "JOURNALFLOW_OAUTH_TOKEN";
     private final AuthService authService;
     private final OAuth2TokenExchangeService oauth2TokenExchangeService;
+
+    @Value("${app.oauth2.cookie.secure:false}")
+    private boolean oauthCookieSecure;
+
+    @Value("${app.oauth2.cookie.same-site:Lax}")
+    private String oauthCookieSameSite;
 
     @Operation(
             summary =
@@ -125,8 +132,8 @@ public class AuthController {
                                 ""
                         )
                         .httpOnly(true)
-                        .secure(false)
-                        .sameSite("Lax")
+                        .secure(oauthCookieSecure)
+                        .sameSite(oauthCookieSameSite)
                         .path("/")
                         .maxAge(0)
                         .build();

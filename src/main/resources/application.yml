@@ -72,6 +72,10 @@ app:
     frontend-login-url: ${FRONTEND_LOGIN_URL}
     frontend-failure-url: ${FRONTEND_FAILURE_URL}
 
+    cookie:
+      secure: false
+      same-site: Lax
+
 cloudinary:
   cloud-name: ${CLOUDINARY_NAME}
   api-key: ${CLOUDINARY_API_KEY}

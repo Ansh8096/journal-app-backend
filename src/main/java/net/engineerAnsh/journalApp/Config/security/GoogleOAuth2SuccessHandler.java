@@ -48,6 +48,12 @@ public class GoogleOAuth2SuccessHandler
     @Value("${app.oauth2.frontend-login-url}")
     private String frontendLoginUrl;
 
+    @Value("${app.oauth2.cookie.secure:false}")
+    private boolean oauthCookieSecure;
+
+    @Value("${app.oauth2.cookie.same-site:Lax}")
+    private String oauthCookieSameSite;
+
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
@@ -201,8 +207,8 @@ public class GoogleOAuth2SuccessHandler
                                 jwt
                         )
                         .httpOnly(true)
-                        .secure(false)
-                        .sameSite("Lax")
+                        .secure(oauthCookieSecure)
+                        .sameSite(oauthCookieSameSite)
                         .path("/")
                         .maxAge(60)
                         .build();

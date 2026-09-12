@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import net.engineerAnsh.journalApp.Dto.auth.LoginResponseDto;
 import net.engineerAnsh.journalApp.Entity.User;
 import net.engineerAnsh.journalApp.Utils.JwtUtils;
+import net.engineerAnsh.journalApp.exception.exceptions.UnauthorizedException;
 import net.engineerAnsh.journalApp.mapper.UserMapper;
 
 import org.springframework.stereotype.Service;
@@ -35,8 +36,8 @@ public class OAuth2TokenExchangeService {
                 token == null ||
                         token.isBlank()
         ) {
-            throw new IllegalArgumentException(
-                    "OAuth token is missing."
+            throw new UnauthorizedException(
+                    "Google authentication session is missing or expired."
             );
         }
 
@@ -46,8 +47,8 @@ public class OAuth2TokenExchangeService {
         try {
 
             if (!jwtUtils.validateToken(token)) {
-                throw new IllegalArgumentException(
-                        "OAuth token is invalid or expired."
+                throw new UnauthorizedException(
+                        "Google authentication session is invalid or expired."
                 );
             }
 
